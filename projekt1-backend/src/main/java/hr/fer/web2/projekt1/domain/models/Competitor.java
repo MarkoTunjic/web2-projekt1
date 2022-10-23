@@ -10,8 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import hr.fer.web2.projekt1.domain.views.PointsView;
 
 @Entity
 @Table(name = "competitor")
@@ -19,14 +22,16 @@ public class Competitor {
     private Long id;
     private String name;
     private String alias;
+    private PointsView points;
     private List<Game> games = new ArrayList<>();
 
     public Competitor() {
     }
 
-    public Competitor(String name, String alias, List<Game> games) {
+    public Competitor(String name, String alias, PointsView points, List<Game> games) {
         this.name = name;
         this.alias = alias;
+        this.points = points;
         this.games = games;
     }
 
@@ -56,6 +61,15 @@ public class Competitor {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    @OneToOne(mappedBy = "competitor")
+    public PointsView getPoints() {
+        return points;
+    }
+
+    public void setPoints(PointsView points) {
+        this.points = points;
     }
 
     @OneToMany(mappedBy = "round", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
