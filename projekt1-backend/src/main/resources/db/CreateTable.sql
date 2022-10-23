@@ -25,9 +25,9 @@ CREATE TABLE round
 
 CREATE TABLE game
 (
-  first_competitor_score INT NOT NULL,
+  first_competitor_score INT,
   id INT NOT NULL,
-  second_competitor_score INT NOT NULL,
+  second_competitor_score INT,
   first_competitor_id INT NOT NULL,
   second_competitor_id INT NOT NULL,
   round_id INT NOT NULL,
