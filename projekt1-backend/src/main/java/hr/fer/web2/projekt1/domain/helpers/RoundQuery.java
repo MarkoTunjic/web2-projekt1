@@ -1,19 +1,17 @@
-package hr.fer.web2.projekt1.domain.dto;
+package hr.fer.web2.projekt1.domain.helpers;
 
-public class CompetitorDTO {
+public class RoundQuery {
     private Long id;
-    private String name;
-    private String alias;
-    private Integer pointsSum;
+    private Integer ordinalNumber;
+    private Long gamesPlayed;
 
-    public CompetitorDTO() {
+    public RoundQuery() {
     }
 
-    public CompetitorDTO(Long id, String name, String alias, Integer pointsSum) {
+    public RoundQuery(Long id, Integer ordinalNumber, Long gamesPlayed) {
         this.id = id;
-        this.name = name;
-        this.alias = alias;
-        this.pointsSum = pointsSum;
+        this.ordinalNumber = ordinalNumber;
+        this.gamesPlayed = gamesPlayed;
     }
 
     public Long getId() {
@@ -24,28 +22,20 @@ public class CompetitorDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Integer getOrdinalNumber() {
+        return ordinalNumber;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrdinalNumber(Integer ordinalNumber) {
+        this.ordinalNumber = ordinalNumber;
     }
 
-    public String getAlias() {
-        return alias;
+    public Long getGamesPlayed() {
+        return gamesPlayed;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public Integer getPointsSum() {
-        return pointsSum;
-    }
-
-    public void setPointsSum(Integer pointsSum) {
-        this.pointsSum = pointsSum;
+    public void setGamesPlayed(Long gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 
     @Override
@@ -64,7 +54,7 @@ public class CompetitorDTO {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CompetitorDTO other = (CompetitorDTO) obj;
+        RoundQuery other = (RoundQuery) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -72,5 +62,4 @@ public class CompetitorDTO {
             return false;
         return true;
     }
-
 }
