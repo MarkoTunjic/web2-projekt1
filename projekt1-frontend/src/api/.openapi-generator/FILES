@@ -1,0 +1,11 @@
+.openapi-generator-ignore
+apis/CompetitorControllerApi.ts
+apis/GameControllerApi.ts
+apis/RoundControllerApi.ts
+apis/index.ts
+index.ts
+models/CompetitorDTO.ts
+models/GameDTO.ts
+models/RoundDTO.ts
+models/index.ts
+runtime.ts
