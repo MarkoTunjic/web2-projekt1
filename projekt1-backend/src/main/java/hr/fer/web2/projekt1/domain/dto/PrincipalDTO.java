@@ -1,39 +1,21 @@
-package hr.fer.web2.projekt1.domain.models;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+package hr.fer.web2.projekt1.domain.dto;
 
 import hr.fer.web2.projekt1.domain.helpers.PrincipalType;
 
-@Entity
-@Table(name = "principal")
-public class Principal {
+public class PrincipalDTO {
     private Long id;
     private String email;
     private PrincipalType principalType;
-    private List<RoundComment> roundComments = new ArrayList<>();
 
-    public Principal() {
+    public PrincipalDTO() {
     }
 
-    public Principal(String email, PrincipalType principalType, List<RoundComment> roundComments) {
+    public PrincipalDTO(Long id, String email, PrincipalType principalType) {
+        this.id = id;
         this.email = email;
         this.principalType = principalType;
-        this.roundComments = roundComments;
     }
 
-    @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -42,7 +24,6 @@ public class Principal {
         this.id = id;
     }
 
-    @Column(length = 320, nullable = false)
     public String getEmail() {
         return email;
     }
@@ -51,23 +32,12 @@ public class Principal {
         this.email = email;
     }
 
-    @Column(nullable = false)
     public PrincipalType getPrincipalType() {
         return principalType;
     }
 
     public void setPrincipalType(PrincipalType principalType) {
         this.principalType = principalType;
-    }
-
-    @OneToMany(mappedBy = "principal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @OrderBy("datePosted")
-    public List<RoundComment> getRoundComments() {
-        return roundComments;
-    }
-
-    public void setRoundComments(List<RoundComment> roundComments) {
-        this.roundComments = roundComments;
     }
 
     @Override
@@ -86,7 +56,7 @@ public class Principal {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Principal other = (Principal) obj;
+        PrincipalDTO other = (PrincipalDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

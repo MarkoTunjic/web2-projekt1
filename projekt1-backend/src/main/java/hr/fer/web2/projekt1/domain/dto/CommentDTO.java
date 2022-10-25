@@ -1,38 +1,23 @@
-package hr.fer.web2.projekt1.domain.models;
+package hr.fer.web2.projekt1.domain.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-@Entity
-@Table(name = "round_comment")
-public class RoundComment {
+public class CommentDTO {
     private Long id;
     private String commentText;
     private Date datePosted;
-    private Principal principal;
-    private Round round;
+    private PrincipalDTO principal;
 
-    public RoundComment() {
+    public CommentDTO() {
     }
 
-    public RoundComment(String commentText, Date datePosted, Principal principal, Round round) {
+    public CommentDTO(Long id, String commentText, Date datePosted, PrincipalDTO principal) {
+        this.id = id;
         this.commentText = commentText;
         this.datePosted = datePosted;
         this.principal = principal;
-        this.round = round;
     }
 
-    @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -41,7 +26,6 @@ public class RoundComment {
         this.id = id;
     }
 
-    @Column(nullable = false)
     public String getCommentText() {
         return commentText;
     }
@@ -50,8 +34,6 @@ public class RoundComment {
         this.commentText = commentText;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
     public Date getDatePosted() {
         return datePosted;
     }
@@ -60,24 +42,12 @@ public class RoundComment {
         this.datePosted = datePosted;
     }
 
-    @ManyToOne
-    @JoinColumn(nullable = true)
-    public Principal getPrincipal() {
+    public PrincipalDTO getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(Principal principal) {
+    public void setPrincipal(PrincipalDTO principal) {
         this.principal = principal;
-    }
-
-    @ManyToOne
-    @JoinColumn(nullable = true)
-    public Round getRound() {
-        return round;
-    }
-
-    public void setRound(Round round) {
-        this.round = round;
     }
 
     @Override
@@ -96,7 +66,7 @@ public class RoundComment {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        RoundComment other = (RoundComment) obj;
+        CommentDTO other = (CommentDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
