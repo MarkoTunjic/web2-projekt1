@@ -1,11 +1,13 @@
-.openapi-generator-ignore
 apis/CompetitorControllerApi.ts
 apis/GameControllerApi.ts
+apis/RoundCommentControllerApi.ts
 apis/RoundControllerApi.ts
 apis/index.ts
 index.ts
+models/CommentDTO.ts
 models/CompetitorDTO.ts
 models/GameDTO.ts
+models/PrincipalDTO.ts
 models/RoundDTO.ts
 models/index.ts
 runtime.ts
