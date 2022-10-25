@@ -1,7 +1,7 @@
-import React from "react";
+import RoundsGrid from "../containers/RoundsGrid/RoundsGrid";
 
 function Rounds() {
-    return <h1>Rounds</h1>
+    return <RoundsGrid />
 }
 
 export default Rounds;

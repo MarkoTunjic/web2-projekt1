@@ -1,10 +1,12 @@
 import { Avatar, Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Colors from '../../colors.json';
 import { LinkStyle } from './Header.styles';
 
 function Header() {
     const [activeIndex, setActiveIndex] = useState<number>(0);
+    const navigate = useNavigate();
     useEffect(() => {
         const pathname = window.location.pathname;
         if (pathname.toLowerCase().includes("competitors")) {
@@ -20,23 +22,23 @@ function Header() {
         <Box sx={{ backgroundColor: Colors["second"], display: 'flex', alignItems: 'center', textAlign: 'center', justifyContent: 'space-between', padding: "10px" }}>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                 <Typography sx={{ minWidth: 100 }}>
-                    <Link href="/" sx={{ ...LinkStyle, color: activeIndex === 0 ? Colors["third"] : "black" }}>
+                    <Link onClick={() => navigate("/")} sx={{ ...LinkStyle, color: activeIndex === 0 ? Colors["third"] : "black" }}>
                         Home
                     </Link>
                 </Typography>
                 <Typography sx={{ minWidth: 100 }}>
-                    <Link href="/competitors" sx={{ ...LinkStyle, color: activeIndex === 1 ? Colors["third"] : "black" }} >
+                    <Link onClick={() => navigate("/competitors")} sx={{ ...LinkStyle, color: activeIndex === 1 ? Colors["third"] : "black" }} >
                         Competitors
                     </Link>
                 </Typography>
                 <Typography sx={{ minWidth: 100 }}>
-                    <Link href="/rounds" sx={{ ...LinkStyle, color: activeIndex === 2 ? Colors["third"] : "black" }}>
+                    <Link onClick={() => navigate("/rounds")} sx={{ ...LinkStyle, color: activeIndex === 2 ? Colors["third"] : "black" }}>
                         Rounds
                     </Link>
                 </Typography>
             </Box>
             <Typography sx={{ minWidth: 100 }}>
-                <Link href="/" sx={{ ...LinkStyle, color: activeIndex === 2 ? Colors["third"] : "black" }}>
+                <Link onClick={() => navigate("/")} sx={{ ...LinkStyle, color: activeIndex === 3 ? Colors["third"] : "black" }}>
                     Login
                 </Link>
             </Typography>

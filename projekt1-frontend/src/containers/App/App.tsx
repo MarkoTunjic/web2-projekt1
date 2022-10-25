@@ -10,13 +10,13 @@ import Home from '../../pages/Home';
 function App() {
   return (
     <div className="App" style={{ width: '100vw', height: '100vh', backgroundColor: Colors["third"], textAlign: 'center' }}>
-      <Header />
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/competitors" element={<Competitors />} />
           <Route path="/rounds" element={<Rounds />} />
-          <Route path="/games/:id" element={<Games />} />
+          <Route path="/games/round/:id" element={<Games />} />
         </Routes>
       </BrowserRouter>
     </div >
