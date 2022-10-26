@@ -15,7 +15,7 @@ function Logout() {
     useEffect(() => {
         console.log(isAuthenticated)
         if (isAuthenticated) {
-            logout({ returnTo: "/" })
+            logout();
         } else {
             navigate("/");
         }

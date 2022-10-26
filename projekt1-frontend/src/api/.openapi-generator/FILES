@@ -7,6 +7,7 @@ index.ts
 models/CommentDTO.ts
 models/CompetitorDTO.ts
 models/GameDTO.ts
+models/NewGameRequest.ts
 models/PrincipalDTO.ts
 models/RoundDTO.ts
 models/index.ts

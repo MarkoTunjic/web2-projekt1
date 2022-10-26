@@ -1,12 +1,19 @@
 import { Box, Card, CardContent, TextField, Button } from "@mui/material";
 import { useState } from "react";
+import { NewGameRequest } from "../../api";
 
-function NewGameEntry() {
-    const [firstCompetitorId, setFirstCompetitorId] = useState<number>();
-    const [secondCompetitorId, setSecondCompetitorId] = useState<number>();
-    const [firstCompetitorScore, setFirstCompetitorScore] = useState<number>();
-    const [secondCompetitorScore, setSecondCompetitorScore] = useState<number>();
-    const [date, setDate] = useState<Date>();
+interface NewGameEntryProps {
+    createNewGame: (newGameRequest: NewGameRequest) => void
+}
+
+function NewGameEntry(props: NewGameEntryProps) {
+    const [newGameEntry, setNewGameEntry] = useState<NewGameRequest>({
+        firstCompetitorId: undefined,
+        secondCompetitorId: undefined,
+        firstCompetitorScore: undefined,
+        secondCompetitorScore: undefined,
+        date: undefined
+    });
 
     return <Card sx={{ marginTop: "20px", marginRight: "20px" }}>
         <CardContent>
@@ -16,41 +23,47 @@ function NewGameEntry() {
                     label="First competitor id"
                     variant="outlined"
                     type="number"
-                    value={firstCompetitorId}
-                    onChange={(event: any) => setFirstCompetitorId(event.target.value)}
+                    value={newGameEntry.firstCompetitorId}
+                    onChange={(event: any) => setNewGameEntry({ ...newGameEntry, firstCompetitorId: event.target.value })}
                     sx={{ marginRight: "5px" }} />
                 <TextField
                     id="second-id"
                     label="Second competitor id"
                     variant="outlined"
                     type="number"
-                    value={secondCompetitorId}
-                    onChange={(event: any) => setSecondCompetitorId(event.target.value)}
+                    value={newGameEntry.secondCompetitorId}
+                    onChange={(event: any) => setNewGameEntry({ ...newGameEntry, secondCompetitorId: event.target.value })}
                     sx={{ marginRight: "5px" }} />
                 <TextField
                     id="first-score"
                     label="First competitor score"
                     variant="outlined"
                     type="number"
-                    value={firstCompetitorScore}
-                    onChange={(event: any) => setFirstCompetitorScore(event.target.value)}
+                    value={newGameEntry.firstCompetitorScore}
+                    onChange={(event: any) => setNewGameEntry({ ...newGameEntry, firstCompetitorScore: event.target.value })}
                     sx={{ marginRight: "5px" }} />
                 <TextField
                     id="second-score"
                     label="Second competitor score"
                     variant="outlined"
                     type="number"
-                    value={secondCompetitorScore}
-                    onChange={(event: any) => setSecondCompetitorScore(event.target.value)}
+                    value={newGameEntry.secondCompetitorScore}
+                    onChange={(event: any) => setNewGameEntry({ ...newGameEntry, secondCompetitorScore: event.target.value })}
                     sx={{ marginRight: "5px" }} />
                 <TextField
                     id="date"
                     variant="outlined"
                     type="date"
-                    value={date}
-                    onChange={(event: any) => setDate(event.target.value)}
+                    value={newGameEntry.date}
+                    onChange={(event: any) => {
+                        setNewGameEntry({ ...newGameEntry, date: event.target.value });
+                    }
+                    }
                     sx={{ marginRight: "5px" }} />
-                <Button variant="contained" onClick={() => console.log(date)}>Submit</Button>
+                <Button variant="contained" onClick={() => {
+                    console.log(newGameEntry)
+                    props.createNewGame({ ...newGameEntry, date: new Date(newGameEntry.date?.toString()!) });
+                }}>Submit</Button>
             </Box>
         </CardContent>
     </Card>

@@ -16,11 +16,19 @@
 import * as runtime from '../runtime';
 import type {
   GameDTO,
+  NewGameRequest,
 } from '../models';
 import {
     GameDTOFromJSON,
     GameDTOToJSON,
+    NewGameRequestFromJSON,
+    NewGameRequestToJSON,
 } from '../models';
+
+export interface CreateNewGameRequest {
+    roundId: number;
+    newGameRequest: NewGameRequest;
+}
 
 export interface GetAllGamesByRoundIdRequest {
     roundId: number;
@@ -30,6 +38,49 @@ export interface GetAllGamesByRoundIdRequest {
  * 
  */
 export class GameControllerApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async createNewGameRaw(requestParameters: CreateNewGameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GameDTO>> {
+        if (requestParameters.roundId === null || requestParameters.roundId === undefined) {
+            throw new runtime.RequiredError('roundId','Required parameter requestParameters.roundId was null or undefined when calling createNewGame.');
+        }
+
+        if (requestParameters.newGameRequest === null || requestParameters.newGameRequest === undefined) {
+            throw new runtime.RequiredError('newGameRequest','Required parameter requestParameters.newGameRequest was null or undefined when calling createNewGame.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerAuthentication", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/games/round/{roundId}`.replace(`{${"roundId"}}`, encodeURIComponent(String(requestParameters.roundId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: NewGameRequestToJSON(requestParameters.newGameRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GameDTOFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async createNewGame(requestParameters: CreateNewGameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GameDTO> {
+        const response = await this.createNewGameRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      */

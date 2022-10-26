@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CommentDTO, GameDTO } from "../../api";
+import { CommentDTO, GameDTO, NewGameRequest } from "../../api";
 import { ClientsContext } from "../../store/ClientsContext";
 import CommentsGrid from "./CommentsGrid";
 import GamesTable from "./GamesTable";
@@ -24,6 +24,11 @@ function GamesGrid() {
         setComments(await roundCommentClient.getAllCommentsForRound({ roundId: Number.parseInt(roundId!) }));
     }
 
+    async function postNewGame(newGameRequest: NewGameRequest) {
+        await gameClient.createNewGame({ newGameRequest: newGameRequest, roundId: Number.parseInt(roundId!) });
+        getGames();
+    }
+
     useEffect(() => {
         getGames();
         getComments();
@@ -33,7 +38,7 @@ function GamesGrid() {
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <h1 key="header">Games for round {roundId}</h1>
             <GamesTable key="table" games={games} currentEditingRow={currentEditingRow} setCurrentEditingRow={setCurrentEditingRow} />
-            {isAuthenticated && <NewGameEntry key="new" />}
+            {isAuthenticated && <NewGameEntry key="new" createNewGame={postNewGame} />}
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <h1>Comments</h1>
