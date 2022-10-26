@@ -18,10 +18,8 @@ function GamesTable(props: GamesTableProps) {
     const getButton = useCallback((row: GameDTO, index: number) => {
         if (!isAuthenticated) {
             return <></>;
-        } else {
-            console.log(user);
         }
-        props.currentEditingRow !== index ?
+        return props.currentEditingRow !== index ?
             <Button variant="contained" onClick={() => {
                 setFirstCompetitorScore(row.firstCompetitorScore)
                 setSecondCompetitorScore(row.secondCompetitorScore)
