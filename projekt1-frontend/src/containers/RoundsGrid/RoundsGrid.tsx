@@ -6,7 +6,6 @@ import RoundsTable from "./RoundsTable";
 
 function RoundsGrid() {
     const [data, setData] = useState<RoundDTO[]>();
-    const [currentEditingRow, setCurrentEditingRow] = useState<number>(-1);
     const { roundClient } = useContext(ClientsContext);
 
     async function getRounds(): Promise<void> {

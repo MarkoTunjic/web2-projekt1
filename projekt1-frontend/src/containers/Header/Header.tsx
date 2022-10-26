@@ -15,6 +15,8 @@ function Header() {
             setActiveIndex(1);
         } else if (location.pathname.toLowerCase().includes("rounds")) {
             setActiveIndex(2);
+        } else if (location.pathname.toLowerCase().includes("games")) {
+            setActiveIndex(2);
         } else if (location.pathname === "/" || pathname === "") {
             setActiveIndex(0);
         }

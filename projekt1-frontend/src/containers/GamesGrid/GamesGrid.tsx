@@ -5,12 +5,12 @@ import { CommentDTO, GameDTO } from "../../api";
 import { ClientsContext } from "../../store/ClientsContext";
 import CommentsGrid from "./CommentsGrid";
 import GamesTable from "./GamesTable";
+import NewGameEntry from "./NewGameEntry";
 
 function GamesGrid() {
     const [games, setGames] = useState<GameDTO[]>();
     const [comments, setComments] = useState<CommentDTO[]>();
     const [currentEditingRow, setCurrentEditingRow] = useState<number>(-1);
-    const [newComment, setNewComment] = useState<string>("");
     let { roundId } = useParams();
     const { gameClient, roundCommentClient } = useContext(ClientsContext);
 
@@ -29,12 +29,13 @@ function GamesGrid() {
 
     return <Box sx={{ display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-            <h1>Games for round {roundId}</h1>
-            <GamesTable games={games} currentEditingRow={currentEditingRow} setCurrentEditingRow={setCurrentEditingRow} />
+            <h1 key="header">Games for round {roundId}</h1>
+            <GamesTable key="table" games={games} currentEditingRow={currentEditingRow} setCurrentEditingRow={setCurrentEditingRow} />
+            <NewGameEntry key="new" />
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <h1>Comments</h1>
-            <CommentsGrid comments={comments} newComment={newComment} setNewComment={setNewComment} />
+            <CommentsGrid comments={comments} />
         </Box>
     </Box>
 }

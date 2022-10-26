@@ -1,16 +1,15 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { CommentDTO } from "../../api";
 import Comment from "../../components/Comment/Comment";
 import Colors from "../../colors.json";
 
 interface CommentsGridProps {
-    comments: CommentDTO[] | undefined,
-    newComment: string,
-    setNewComment: (newComment: string) => void
+    comments: CommentDTO[] | undefined
 }
 
 function CommentsGrid(props: CommentsGridProps) {
+    const [newComment, setNewComment] = useState<string>("");
 
     const getCommentCards = useCallback(() => {
         return props.comments?.map(comment => <Comment comment={comment} />);
@@ -25,8 +24,8 @@ function CommentsGrid(props: CommentsGridProps) {
                 variant="filled"
                 sx={{ marginBottom: "10px" }}
                 rows={4}
-                value={props.newComment}
-                onChange={(event: any) => props.setNewComment(event.target.value)} />
+                value={newComment}
+                onChange={(event: any) => setNewComment(event.target.value)} />
             <Button variant="contained" sx={{ backgroundColor: Colors["second"] }}>
                 Submit
             </Button>

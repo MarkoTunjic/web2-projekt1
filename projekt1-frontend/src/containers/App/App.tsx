@@ -9,7 +9,7 @@ import Home from '../../pages/Home';
 
 function App() {
   return (
-    <div className="App" style={{ width: '100vw', height: '100vh', backgroundColor: Colors["third"], textAlign: 'center' }}>
+    <div className="App" style={{ width: '100vw', height: '100vh', backgroundColor: Colors["third"], textAlign: 'center', overflow: "visible" }}>
       <BrowserRouter>
         <Header />
         <Routes>

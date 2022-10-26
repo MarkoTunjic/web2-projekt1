@@ -1,5 +1,5 @@
-import { Button, TableCell, TableContainer, TableRow, Paper, Table, TableHead, TableBody } from "@mui/material";
-import { useCallback } from "react";
+import { Button, TableCell, TableContainer, TableRow, Paper, Table, TableHead, TableBody, TextField } from "@mui/material";
+import { useCallback, useState } from "react";
 import { CommentDTO, GameDTO } from "../../api";
 import Colors from "../../colors.json"
 
@@ -10,6 +10,9 @@ interface GamesTableProps {
 }
 
 function GamesTable(props: GamesTableProps) {
+    const [firstCompetitorScore, setFirstCompetitorScore] = useState<number>();
+    const [secondCompetitorScore, setSecondCompetitorScore] = useState<number>();
+
     const getGameRows = useCallback(
         () => {
             return props.games?.map((row, index) => (
@@ -23,14 +26,34 @@ function GamesTable(props: GamesTableProps) {
                     <TableCell align="left">
                         {row.secondCompetitor?.name + " aka. " + row.secondCompetitor?.alias}
                     </TableCell>
+                    {
+                        props.currentEditingRow === index ?
+                            <TextField
+                                id="first-score"
+                                label="First competitor score"
+                                variant="outlined"
+                                type="number"
+                                value={row.firstCompetitorScore}
+                                onChange={(event: any) => setFirstCompetitorScore(event.target.value)} /> :
+                            <TableCell align="center">
+                                {row.firstCompetitorScore}
+                            </TableCell>
+                    }
+                    {
+                        props.currentEditingRow === index ?
+                            <TextField
+                                id="first-score"
+                                label="First competitor score"
+                                variant="outlined"
+                                type="number"
+                                value={row.secondCompetitorScore}
+                                onChange={(event: any) => setSecondCompetitorScore(event.target.value)} /> :
+                            <TableCell align="center">
+                                {row.secondCompetitorScore}
+                            </TableCell>
+                    }
                     <TableCell align="center">
-                        {row.firstCompetitorScore}
-                    </TableCell>
-                    <TableCell align="center">
-                        {row.secondCompetitorScore}
-                    </TableCell>
-                    <TableCell align="center">
-                        {row.scheduledDate?.toLocaleString()}
+                        {row.scheduledDate?.toDateString()}
                     </TableCell>
                     <TableCell align="right">
                         {
