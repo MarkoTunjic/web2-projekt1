@@ -1,7 +1,8 @@
-import React from "react";
+import GamesGrid from "../containers/GamesGrid/GamesGrid";
+
 
 function Games() {
-    return <h1>Games</h1>
+    return <GamesGrid />
 }
 
 export default Games;

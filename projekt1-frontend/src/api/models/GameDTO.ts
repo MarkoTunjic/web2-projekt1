@@ -28,6 +28,12 @@ import {
 export interface GameDTO {
     /**
      * 
+     * @type {number}
+     * @memberof GameDTO
+     */
+    id?: number;
+    /**
+     * 
      * @type {CompetitorDTO}
      * @memberof GameDTO
      */
@@ -83,6 +89,7 @@ export function GameDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): G
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'firstCompetitor': !exists(json, 'firstCompetitor') ? undefined : CompetitorDTOFromJSON(json['firstCompetitor']),
         'secondCompetitor': !exists(json, 'secondCompetitor') ? undefined : CompetitorDTOFromJSON(json['secondCompetitor']),
         'scheduledDate': !exists(json, 'scheduledDate') ? undefined : (new Date(json['scheduledDate'])),
@@ -101,6 +108,7 @@ export function GameDTOToJSON(value?: GameDTO | null): any {
     }
     return {
         
+        'id': value.id,
         'firstCompetitor': CompetitorDTOToJSON(value.firstCompetitor),
         'secondCompetitor': CompetitorDTOToJSON(value.secondCompetitor),
         'scheduledDate': value.scheduledDate === undefined ? undefined : (value.scheduledDate.toISOString()),

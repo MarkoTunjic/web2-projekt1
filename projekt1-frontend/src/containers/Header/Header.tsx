@@ -1,19 +1,21 @@
 import { Avatar, Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Colors from '../../colors.json';
 import { LinkStyle } from './Header.styles';
 
 function Header() {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const navigate = useNavigate();
+    const location = useLocation();
+
     useEffect(() => {
         const pathname = window.location.pathname;
-        if (pathname.toLowerCase().includes("competitors")) {
+        if (location.pathname.toLowerCase().includes("competitors")) {
             setActiveIndex(1);
-        } else if (pathname.toLowerCase().includes("rounds")) {
+        } else if (location.pathname.toLowerCase().includes("rounds")) {
             setActiveIndex(2);
-        } else if (pathname === "/" || pathname === "") {
+        } else if (location.pathname === "/" || pathname === "") {
             setActiveIndex(0);
         }
     })

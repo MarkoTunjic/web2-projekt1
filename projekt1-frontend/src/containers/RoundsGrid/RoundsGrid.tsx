@@ -19,7 +19,7 @@ function RoundsGrid() {
 
     return <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
         <h1>Rounds</h1>
-        <RoundsTable rounds={data} currentEditingRow={currentEditingRow} setCurrentEditingRow={setCurrentEditingRow} />
+        <RoundsTable rounds={data} />
     </Box>
 }
 

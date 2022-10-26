@@ -3,6 +3,7 @@ package hr.fer.web2.projekt1.domain.dto;
 import java.util.Date;
 
 public class GameDTO {
+    private Long id;
     private CompetitorDTO firstCompetitor;
     private CompetitorDTO secondCompetitor;
     private Date scheduledDate;
@@ -14,13 +15,14 @@ public class GameDTO {
     }
 
     public GameDTO(CompetitorDTO firstCompetitor, CompetitorDTO secondCompetitor, Date scheduledDate,
-            Integer firstCompetitorScore, Integer secondCompetitorScore, Integer roundOrdinalNumber) {
+            Integer firstCompetitorScore, Integer secondCompetitorScore, Integer roundOrdinalNumber, Long id) {
         this.firstCompetitor = firstCompetitor;
         this.secondCompetitor = secondCompetitor;
         this.scheduledDate = scheduledDate;
         this.firstCompetitorScore = firstCompetitorScore;
         this.secondCompetitorScore = secondCompetitorScore;
         this.roundOrdinalNumber = roundOrdinalNumber;
+        this.id = id;
     }
 
     public CompetitorDTO getFirstCompetitor() {
@@ -71,14 +73,19 @@ public class GameDTO {
         this.roundOrdinalNumber = roundOrdinalNumber;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((firstCompetitor == null) ? 0 : firstCompetitor.hashCode());
-        result = prime * result + ((secondCompetitor == null) ? 0 : secondCompetitor.hashCode());
-        result = prime * result + ((scheduledDate == null) ? 0 : scheduledDate.hashCode());
-        result = prime * result + ((roundOrdinalNumber == null) ? 0 : roundOrdinalNumber.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -91,25 +98,10 @@ public class GameDTO {
         if (getClass() != obj.getClass())
             return false;
         GameDTO other = (GameDTO) obj;
-        if (firstCompetitor == null) {
-            if (other.firstCompetitor != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!firstCompetitor.equals(other.firstCompetitor))
-            return false;
-        if (secondCompetitor == null) {
-            if (other.secondCompetitor != null)
-                return false;
-        } else if (!secondCompetitor.equals(other.secondCompetitor))
-            return false;
-        if (scheduledDate == null) {
-            if (other.scheduledDate != null)
-                return false;
-        } else if (!scheduledDate.equals(other.scheduledDate))
-            return false;
-        if (roundOrdinalNumber == null) {
-            if (other.roundOrdinalNumber != null)
-                return false;
-        } else if (!roundOrdinalNumber.equals(other.roundOrdinalNumber))
+        } else if (!id.equals(other.id))
             return false;
         return true;
     }
