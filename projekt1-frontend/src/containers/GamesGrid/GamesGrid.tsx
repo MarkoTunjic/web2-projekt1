@@ -6,13 +6,15 @@ import { ClientsContext } from "../../store/ClientsContext";
 import CommentsGrid from "./CommentsGrid";
 import GamesTable from "./GamesTable";
 import NewGameEntry from "./NewGameEntry";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function GamesGrid() {
     const [games, setGames] = useState<GameDTO[]>();
     const [comments, setComments] = useState<CommentDTO[]>();
     const [currentEditingRow, setCurrentEditingRow] = useState<number>(-1);
-    let { roundId } = useParams();
+    const { roundId } = useParams();
     const { gameClient, roundCommentClient } = useContext(ClientsContext);
+    const { isAuthenticated } = useAuth0();
 
     async function getGames(): Promise<void> {
         setGames(await gameClient.getAllGamesByRoundId({ roundId: Number.parseInt(roundId!) }));
@@ -31,7 +33,7 @@ function GamesGrid() {
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <h1 key="header">Games for round {roundId}</h1>
             <GamesTable key="table" games={games} currentEditingRow={currentEditingRow} setCurrentEditingRow={setCurrentEditingRow} />
-            <NewGameEntry key="new" />
+            {isAuthenticated && <NewGameEntry key="new" />}
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <h1>Comments</h1>

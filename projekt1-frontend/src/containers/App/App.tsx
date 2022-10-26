@@ -6,6 +6,8 @@ import Rounds from '../../pages/Rounds';
 import './App.css';
 import Colors from "../../colors.json"
 import Home from '../../pages/Home';
+import Login from '../../pages/Login';
+import Logout from '../../pages/Logout';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/competitors" element={<Competitors />} />
           <Route path="/rounds" element={<Rounds />} />
           <Route path="/games/round/:roundId" element={<Games />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </BrowserRouter>
     </div >

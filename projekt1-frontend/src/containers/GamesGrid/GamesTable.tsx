@@ -1,7 +1,8 @@
 import { Button, TableCell, TableContainer, TableRow, Paper, Table, TableHead, TableBody, TextField } from "@mui/material";
 import { useCallback, useState } from "react";
-import { CommentDTO, GameDTO } from "../../api";
-import Colors from "../../colors.json"
+import { GameDTO } from "../../api";
+import Colors from "../../colors.json";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface GamesTableProps {
     games: GameDTO[] | undefined,
@@ -12,9 +13,31 @@ interface GamesTableProps {
 function GamesTable(props: GamesTableProps) {
     const [firstCompetitorScore, setFirstCompetitorScore] = useState<number>();
     const [secondCompetitorScore, setSecondCompetitorScore] = useState<number>();
+    const { isAuthenticated, user } = useAuth0();
+
+    const getButton = useCallback((row: GameDTO, index: number) => {
+        if (!isAuthenticated) {
+            return <></>;
+        } else {
+            console.log(user);
+        }
+        props.currentEditingRow !== index ?
+            <Button variant="contained" onClick={() => {
+                setFirstCompetitorScore(row.firstCompetitorScore)
+                setSecondCompetitorScore(row.secondCompetitorScore)
+                props.setCurrentEditingRow(index);
+            }}>Edit</Button> :
+            <>
+                <Button variant="contained" sx={{ backgroundColor: Colors["fourth"] }}>Save</Button>
+                <Button onClick={() => props.setCurrentEditingRow(-1)} variant="contained" sx={{ backgroundColor: Colors["third"] }}>Cancel</Button>
+            </>
+    }, [isAuthenticated, props.currentEditingRow])
 
     const getGameRows = useCallback(
         () => {
+            if (!isAuthenticated) {
+                props.setCurrentEditingRow(-1);
+            }
             return props.games?.map((row, index) => (
                 <TableRow
                     key={row.id}
@@ -33,7 +56,7 @@ function GamesTable(props: GamesTableProps) {
                                 label="First competitor score"
                                 variant="outlined"
                                 type="number"
-                                value={row.firstCompetitorScore}
+                                value={firstCompetitorScore}
                                 onChange={(event: any) => setFirstCompetitorScore(event.target.value)} /> :
                             <TableCell align="center">
                                 {row.firstCompetitorScore}
@@ -46,7 +69,7 @@ function GamesTable(props: GamesTableProps) {
                                 label="First competitor score"
                                 variant="outlined"
                                 type="number"
-                                value={row.secondCompetitorScore}
+                                value={secondCompetitorScore}
                                 onChange={(event: any) => setSecondCompetitorScore(event.target.value)} /> :
                             <TableCell align="center">
                                 {row.secondCompetitorScore}
@@ -57,18 +80,13 @@ function GamesTable(props: GamesTableProps) {
                     </TableCell>
                     <TableCell align="right">
                         {
-                            props.currentEditingRow !== index ?
-                                <Button variant="contained" onClick={() => props.setCurrentEditingRow(index)}>Edit</Button> :
-                                <>
-                                    <Button variant="contained" sx={{ backgroundColor: Colors["fourth"] }}>Save</Button>
-                                    <Button onClick={() => props.setCurrentEditingRow(-1)} variant="contained" sx={{ backgroundColor: Colors["third"] }}>Cancel</Button>
-                                </>
+                            getButton(row, index)
                         }
                     </TableCell>
                 </TableRow>
             ))
         },
-        [props.games, props.currentEditingRow],
+        [props.games, props.currentEditingRow, firstCompetitorScore, secondCompetitorScore],
     )
 
     return <TableContainer component={Paper} sx={{ width: "100%", marginTop: "10px", marginRight: "20px" }}>

@@ -4,12 +4,15 @@ import { Box } from "@mui/system";
 import { RoundDTO } from "../../api";
 import Colors from "../../colors.json"
 import { useCallback } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
 interface TableProps {
     rounds: RoundDTO[] | undefined,
 }
 
 function RoundsTable(props: TableProps) {
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth0();
 
     const getRows = useCallback(
         () => {
@@ -33,7 +36,7 @@ function RoundsTable(props: TableProps) {
 
 
     return <Box sx={{ width: "65%", display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-        <Button variant="contained" sx={{ backgroundColor: Colors["fourth"] }}>Add</Button>
+        {isAuthenticated && <Button variant="contained" sx={{ backgroundColor: Colors["fourth"] }}>Add</Button>}
         <TableContainer component={Paper} sx={{ marginTop: "10px" }}>
             <Table aria-label="simple table">
                 <TableHead>

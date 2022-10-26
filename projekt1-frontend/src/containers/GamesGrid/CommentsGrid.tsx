@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { CommentDTO } from "../../api";
 import Comment from "../../components/Comment/Comment";
 import Colors from "../../colors.json";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface CommentsGridProps {
     comments: CommentDTO[] | undefined
@@ -10,13 +11,14 @@ interface CommentsGridProps {
 
 function CommentsGrid(props: CommentsGridProps) {
     const [newComment, setNewComment] = useState<string>("");
+    const { isAuthenticated } = useAuth0();
 
     const getCommentCards = useCallback(() => {
         return props.comments?.map(comment => <Comment comment={comment} />);
     }, [props.comments]);
 
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
-        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+        {isAuthenticated && <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
             <TextField
                 id="add-comment"
                 multiline
@@ -29,7 +31,7 @@ function CommentsGrid(props: CommentsGridProps) {
             <Button variant="contained" sx={{ backgroundColor: Colors["second"] }}>
                 Submit
             </Button>
-        </Box>
+        </Box>}
         {getCommentCards()}
     </Box>
 }

@@ -3,13 +3,29 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './containers/App/App';
 import reportWebVitals from './reportWebVitals';
+import { Auth0Provider } from "@auth0/auth0-react";
+import configData from "./config.json";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+
+
+const providerConfig = {
+  domain: configData.domain,
+  clientId: configData.clientId,
+  audience: configData.audience,
+  redirectUri: window.location.origin,
+  useRefreshTokens: true
+};
+
 root.render(
+
   <React.StrictMode>
-    <App />
+    <Auth0Provider {...providerConfig}>
+      <App />
+    </Auth0Provider>
   </React.StrictMode>
 );
 
