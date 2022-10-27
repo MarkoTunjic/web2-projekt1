@@ -8,26 +8,47 @@ import Colors from "../../colors.json"
 import Home from '../../pages/Home';
 import Login from '../../pages/Login';
 import Logout from '../../pages/Logout';
-import ClientsContextProvider from '../../store/ClientsContext';
+import { ClientsContext } from '../../store/ClientsContext';
+import { useAuth0 } from '@auth0/auth0-react';
+import PrincipalContextProvider, { PrincipalContext } from '../../store/Principalcontext';
+import { useContext, useEffect, useState } from 'react';
 
 function App() {
-  return (
-    <ClientsContextProvider>
-      <div className="App" style={{ width: '100vw', height: '100vh', backgroundColor: Colors["third"], textAlign: 'center', overflow: "visible" }}>
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/competitors" element={<Competitors />} />
-            <Route path="/rounds" element={<Rounds />} />
-            <Route path="/games/round/:roundId" element={<Games />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
-          </Routes>
-        </BrowserRouter>
-      </div >
-    </ClientsContextProvider>
+  const { isLoading, isAuthenticated } = useAuth0();
+  const { setPrincipal } = useContext(PrincipalContext);
+  const { authenticationClient } = useContext(ClientsContext);
+  const [loading, setLoading] = useState<boolean>(true);
 
+  async function managePrincipal() {
+    if (isAuthenticated) {
+      setLoading(true);
+      setPrincipal(await authenticationClient.getCurrentPrincipal());
+      setLoading(false);
+    } else {
+      setPrincipal(undefined);
+    }
+  }
+
+  useEffect(() => {
+    managePrincipal();
+  }, [isAuthenticated])
+
+  return (
+
+
+    <div className="App" style={{ width: '100vw', minHeight: '100vh', backgroundColor: Colors["third"], textAlign: 'center', overflow: "visible" }}>
+      <BrowserRouter>
+        <Header />
+        {isLoading || loading ? <h1>Loading...</h1> : <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/competitors" element={<Competitors />} />
+          <Route path="/rounds" element={<Rounds />} />
+          <Route path="/games/round/:roundId" element={<Games />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
+        </Routes>}
+      </BrowserRouter>
+    </div >
   );
 }
 

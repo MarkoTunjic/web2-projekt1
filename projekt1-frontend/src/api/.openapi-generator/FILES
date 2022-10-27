@@ -1,3 +1,4 @@
+apis/AuthenticationControllerApi.ts
 apis/CompetitorControllerApi.ts
 apis/GameControllerApi.ts
 apis/RoundCommentControllerApi.ts
@@ -6,6 +7,7 @@ apis/index.ts
 index.ts
 models/CommentDTO.ts
 models/CompetitorDTO.ts
+models/EditGameRequest.ts
 models/GameDTO.ts
 models/NewGameRequest.ts
 models/PrincipalDTO.ts

@@ -7,13 +7,7 @@ interface NewGameEntryProps {
 }
 
 function NewGameEntry(props: NewGameEntryProps) {
-    const [newGameEntry, setNewGameEntry] = useState<NewGameRequest>({
-        firstCompetitorId: undefined,
-        secondCompetitorId: undefined,
-        firstCompetitorScore: undefined,
-        secondCompetitorScore: undefined,
-        date: undefined
-    });
+    const [newGameEntry, setNewGameEntry] = useState<NewGameRequest>({});
 
     return <Card sx={{ marginTop: "20px", marginRight: "20px" }}>
         <CardContent>
@@ -61,8 +55,8 @@ function NewGameEntry(props: NewGameEntryProps) {
                     }
                     sx={{ marginRight: "5px" }} />
                 <Button variant="contained" onClick={() => {
-                    console.log(newGameEntry)
                     props.createNewGame({ ...newGameEntry, date: new Date(newGameEntry.date?.toString()!) });
+                    setNewGameEntry((old) => { return {} });
                 }}>Submit</Button>
             </Box>
         </CardContent>

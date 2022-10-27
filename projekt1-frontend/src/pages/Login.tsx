@@ -1,6 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ClientsContext } from "../store/ClientsContext";
+import { PrincipalContext } from "../store/Principalcontext";
 
 function Login() {
     const {
@@ -12,12 +14,17 @@ function Login() {
 
     const navigate = useNavigate()
 
-    useEffect(() => {
+
+    async function getPrincipal() {
         if (!isAuthenticated) {
-            loginWithRedirect();
+            await loginWithRedirect();
         } else {
             navigate("/");
         }
+    }
+
+    useEffect(() => {
+        getPrincipal();
     })
 
     if (error) {

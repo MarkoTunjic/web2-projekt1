@@ -1,35 +1,43 @@
-import { Button, TableCell, TableContainer, TableRow, Paper, Table, TableHead, TableBody, TextField } from "@mui/material";
-import { useCallback, useState } from "react";
-import { GameDTO } from "../../api";
+import { Button, TableCell, TableContainer, TableRow, Paper, Table, TableHead, TableBody, TextField, Typography } from "@mui/material";
+import { useCallback, useState, useContext } from "react";
+import { GameDTO, EditGameRequest, PrincipalDTOPrincipalTypeEnum } from "../../api";
 import Colors from "../../colors.json";
 import { useAuth0 } from "@auth0/auth0-react";
+import { PrincipalContext } from "../../store/Principalcontext";
 
 interface GamesTableProps {
     games: GameDTO[] | undefined,
     currentEditingRow: number,
-    setCurrentEditingRow: (index: number) => void
+    setCurrentEditingRow: (index: number) => void,
+    editGame: (editGameRequest: EditGameRequest, gameId: number) => void
 }
 
 function GamesTable(props: GamesTableProps) {
-    const [firstCompetitorScore, setFirstCompetitorScore] = useState<number>();
-    const [secondCompetitorScore, setSecondCompetitorScore] = useState<number>();
-    const { isAuthenticated, user } = useAuth0();
+    const [editGameRequest, setEditGameRequest] = useState<EditGameRequest>({});
+    const { isAuthenticated } = useAuth0();
+    const { principal } = useContext(PrincipalContext);
 
     const getButton = useCallback((row: GameDTO, index: number) => {
-        if (!isAuthenticated) {
+        if (!isAuthenticated || principal?.principalType !== PrincipalDTOPrincipalTypeEnum.Admin) {
             return <></>;
         }
         return props.currentEditingRow !== index ?
-            <Button variant="contained" onClick={() => {
-                setFirstCompetitorScore(row.firstCompetitorScore)
-                setSecondCompetitorScore(row.secondCompetitorScore)
-                props.setCurrentEditingRow(index);
-            }}>Edit</Button> :
+            <TableCell>
+                <Button variant="contained" onClick={() => {
+                    setEditGameRequest({ secondCompetitorScore: row.secondCompetitorScore, firstCompetitorScore: row.firstCompetitorScore })
+                    props.setCurrentEditingRow(index);
+                }}>Edit</Button>
+            </TableCell> :
             <>
-                <Button variant="contained" sx={{ backgroundColor: Colors["fourth"] }}>Save</Button>
+                <Button variant="contained" sx={{ backgroundColor: Colors["fourth"] }} onClick={() => {
+                    row.firstCompetitorScore = editGameRequest.firstCompetitorScore;
+                    row.secondCompetitorScore = editGameRequest.secondCompetitorScore;
+                    props.editGame(editGameRequest, row.id!)
+                    props.setCurrentEditingRow(-1);
+                }}>Save</Button>
                 <Button onClick={() => props.setCurrentEditingRow(-1)} variant="contained" sx={{ backgroundColor: Colors["third"] }}>Cancel</Button>
             </>
-    }, [isAuthenticated, props.currentEditingRow])
+    }, [isAuthenticated, props.currentEditingRow, editGameRequest])
 
     const getGameRows = useCallback(
         () => {
@@ -47,32 +55,36 @@ function GamesTable(props: GamesTableProps) {
                     <TableCell align="left">
                         {row.secondCompetitor?.name + " aka. " + row.secondCompetitor?.alias}
                     </TableCell>
-                    {
-                        props.currentEditingRow === index ?
-                            <TextField
-                                id="first-score"
-                                label="First competitor score"
-                                variant="outlined"
-                                type="number"
-                                value={firstCompetitorScore}
-                                onChange={(event: any) => setFirstCompetitorScore(event.target.value)} /> :
-                            <TableCell align="center">
-                                {row.firstCompetitorScore}
-                            </TableCell>
-                    }
-                    {
-                        props.currentEditingRow === index ?
-                            <TextField
-                                id="first-score"
-                                label="First competitor score"
-                                variant="outlined"
-                                type="number"
-                                value={secondCompetitorScore}
-                                onChange={(event: any) => setSecondCompetitorScore(event.target.value)} /> :
-                            <TableCell align="center">
-                                {row.secondCompetitorScore}
-                            </TableCell>
-                    }
+                    <TableCell align="center">
+                        {
+                            props.currentEditingRow === index ?
+                                <TextField
+                                    id="first-score"
+                                    label="First competitor score"
+                                    variant="outlined"
+                                    type="number"
+                                    value={editGameRequest.firstCompetitorScore}
+                                    onChange={(event: any) => setEditGameRequest({ ...editGameRequest, firstCompetitorScore: event.target.value })} /> :
+                                <Typography>
+                                    {row.firstCompetitorScore}
+                                </Typography>
+                        }
+                    </TableCell>
+                    <TableCell align="center">
+                        {
+                            props.currentEditingRow === index ?
+                                <TextField
+                                    id="second-score"
+                                    label="Second competitor score"
+                                    variant="outlined"
+                                    type="number"
+                                    value={editGameRequest.secondCompetitorScore}
+                                    onChange={(event: any) => setEditGameRequest({ ...editGameRequest, secondCompetitorScore: event.target.value })} /> :
+                                <Typography>
+                                    {row.secondCompetitorScore}
+                                </Typography>
+                        }
+                    </TableCell>
                     <TableCell align="center">
                         {row.scheduledDate?.toDateString()}
                     </TableCell>
@@ -81,11 +93,9 @@ function GamesTable(props: GamesTableProps) {
                             getButton(row, index)
                         }
                     </TableCell>
-                </TableRow>
+                </TableRow >
             ))
-        },
-        [props.games, props.currentEditingRow, firstCompetitorScore, secondCompetitorScore],
-    )
+        }, [editGameRequest, props]);
 
     return <TableContainer component={Paper} sx={{ width: "100%", marginTop: "10px", marginRight: "20px" }}>
         <Table aria-label="simple table">

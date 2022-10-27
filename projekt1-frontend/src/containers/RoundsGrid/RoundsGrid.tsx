@@ -12,13 +12,18 @@ function RoundsGrid() {
         setData(await roundClient.getAllRounds());
     }
 
+    async function addRound() {
+        await roundClient.addRound({ body: data?.at(data.length - 1)?.ordinalNumber! + 1 })
+        getRounds();
+    }
+
     useEffect(() => {
         getRounds();
     }, [])
 
     return <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
         <h1>Rounds</h1>
-        <RoundsTable rounds={data} />
+        <RoundsTable rounds={data} addRound={addRound} />
     </Box>
 }
 

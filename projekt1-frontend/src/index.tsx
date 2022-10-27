@@ -5,6 +5,8 @@ import App from './containers/App/App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from "@auth0/auth0-react";
 import configData from "./config.json";
+import ClientsContextProvider from './store/ClientsContext';
+import PrincipalContextProvider from './store/Principalcontext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -24,9 +26,13 @@ root.render(
 
   <React.StrictMode>
     <Auth0Provider {...providerConfig}>
-      <App />
+      <ClientsContextProvider>
+        <PrincipalContextProvider>
+          <App />
+        </PrincipalContextProvider>
+      </ClientsContextProvider>
     </Auth0Provider>
-  </React.StrictMode>
+  </React.StrictMode >
 );
 
 // If you want to start measuring performance in your app, pass a function

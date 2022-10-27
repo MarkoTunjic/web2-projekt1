@@ -15,9 +15,9 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
     @Query("""
             SELECT new hr.fer.web2.projekt1.domain.helpers.RoundQuery(r.id,
                 r.ordinalNumber,
-                (SELECT COUNT(round1)
-                FROM Round round1
-                WHERE round1.id=r.id))
+                (SELECT COUNT(game)
+                FROM Game game
+                WHERE game.round.id=r.id))
             FROM Round r
             """)
     List<RoundQuery> getAllRounds();

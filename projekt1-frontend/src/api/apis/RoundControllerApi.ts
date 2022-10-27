@@ -22,10 +22,52 @@ import {
     RoundDTOToJSON,
 } from '../models';
 
+export interface AddRoundRequest {
+    body: number;
+}
+
 /**
  * 
  */
 export class RoundControllerApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async addRoundRaw(requestParameters: AddRoundRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling addRound.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerAuthentication", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/rounds`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.body as any,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async addRound(requestParameters: AddRoundRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.addRoundRaw(requestParameters, initOverrides);
+    }
 
     /**
      */

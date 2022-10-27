@@ -9,7 +9,7 @@ function Header() {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const navigate = useNavigate();
     const location = useLocation();
-    const { isAuthenticated } = useAuth0();
+    const { isAuthenticated, isLoading } = useAuth0();
 
     useEffect(() => {
         if (location.pathname.toLowerCase().includes("competitors")) {
@@ -26,6 +26,8 @@ function Header() {
     })
 
     const getLoginOrLogout = useCallback(() => {
+        if (isLoading)
+            return <Typography>Loading...</Typography>
         return isAuthenticated ?
             <Link onClick={() => navigate("/logout")} sx={{ ...LinkStyle, color: activeIndex === 3 ? Colors["third"] : "black" }}>
                 Logout
@@ -33,7 +35,7 @@ function Header() {
             <Link onClick={() => navigate("/login")} sx={{ ...LinkStyle, color: activeIndex === 3 ? Colors["third"] : "black" }}>
                 Login
             </Link>
-    }, [isAuthenticated])
+    }, [isAuthenticated, isLoading])
 
     return <React.Fragment>
         <Box sx={{ backgroundColor: Colors["second"], display: 'flex', alignItems: 'center', textAlign: 'center', justifyContent: 'space-between', padding: "10px" }}>

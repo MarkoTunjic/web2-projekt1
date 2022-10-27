@@ -22,14 +22,58 @@ import {
     CommentDTOToJSON,
 } from '../models';
 
+export interface DeleteCommentRequest {
+    commentId: number;
+}
+
 export interface GetAllCommentsForRoundRequest {
     roundId: number;
+}
+
+export interface NewCommentRequest {
+    roundId: number;
+    body: string;
 }
 
 /**
  * 
  */
 export class RoundCommentControllerApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async deleteCommentRaw(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.commentId === null || requestParameters.commentId === undefined) {
+            throw new runtime.RequiredError('commentId','Required parameter requestParameters.commentId was null or undefined when calling deleteComment.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerAuthentication", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/roundComments/{commentId}`.replace(`{${"commentId"}}`, encodeURIComponent(String(requestParameters.commentId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async deleteComment(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteCommentRaw(requestParameters, initOverrides);
+    }
 
     /**
      */
@@ -56,6 +100,49 @@ export class RoundCommentControllerApi extends runtime.BaseAPI {
      */
     async getAllCommentsForRound(requestParameters: GetAllCommentsForRoundRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CommentDTO>> {
         const response = await this.getAllCommentsForRoundRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async newCommentRaw(requestParameters: NewCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CommentDTO>> {
+        if (requestParameters.roundId === null || requestParameters.roundId === undefined) {
+            throw new runtime.RequiredError('roundId','Required parameter requestParameters.roundId was null or undefined when calling newComment.');
+        }
+
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling newComment.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerAuthentication", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/roundComments/round/{roundId}`.replace(`{${"roundId"}}`, encodeURIComponent(String(requestParameters.roundId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.body as any,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CommentDTOFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async newComment(requestParameters: NewCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CommentDTO> {
+        const response = await this.newCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

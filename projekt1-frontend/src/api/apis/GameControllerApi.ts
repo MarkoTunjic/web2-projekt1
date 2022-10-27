@@ -15,10 +15,13 @@
 
 import * as runtime from '../runtime';
 import type {
+  EditGameRequest,
   GameDTO,
   NewGameRequest,
 } from '../models';
 import {
+    EditGameRequestFromJSON,
+    EditGameRequestToJSON,
     GameDTOFromJSON,
     GameDTOToJSON,
     NewGameRequestFromJSON,
@@ -28,6 +31,11 @@ import {
 export interface CreateNewGameRequest {
     roundId: number;
     newGameRequest: NewGameRequest;
+}
+
+export interface EditScoresRequest {
+    id: number;
+    editGameRequest: EditGameRequest;
 }
 
 export interface GetAllGamesByRoundIdRequest {
@@ -79,6 +87,49 @@ export class GameControllerApi extends runtime.BaseAPI {
      */
     async createNewGame(requestParameters: CreateNewGameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GameDTO> {
         const response = await this.createNewGameRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async editScoresRaw(requestParameters: EditScoresRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GameDTO>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling editScores.');
+        }
+
+        if (requestParameters.editGameRequest === null || requestParameters.editGameRequest === undefined) {
+            throw new runtime.RequiredError('editGameRequest','Required parameter requestParameters.editGameRequest was null or undefined when calling editScores.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerAuthentication", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/games/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EditGameRequestToJSON(requestParameters.editGameRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GameDTOFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async editScores(requestParameters: EditScoresRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GameDTO> {
+        const response = await this.editScoresRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

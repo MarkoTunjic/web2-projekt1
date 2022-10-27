@@ -6,7 +6,9 @@ import Colors from "../../colors.json";
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface CommentsGridProps {
-    comments: CommentDTO[] | undefined
+    comments: CommentDTO[] | undefined,
+    addComment: (newComment: string) => void,
+    deleteComment: (commentId: number) => void
 }
 
 function CommentsGrid(props: CommentsGridProps) {
@@ -14,8 +16,8 @@ function CommentsGrid(props: CommentsGridProps) {
     const { isAuthenticated } = useAuth0();
 
     const getCommentCards = useCallback(() => {
-        return props.comments?.map(comment => <Comment comment={comment} />);
-    }, [props.comments]);
+        return props.comments?.map(comment => <Comment key={comment.id} comment={comment} deleteComment={props.deleteComment} />);
+    }, [props.comments, isAuthenticated]);
 
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
         {isAuthenticated && <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
@@ -27,8 +29,14 @@ function CommentsGrid(props: CommentsGridProps) {
                 sx={{ marginBottom: "10px" }}
                 rows={4}
                 value={newComment}
-                onChange={(event: any) => setNewComment(event.target.value)} />
-            <Button variant="contained" sx={{ backgroundColor: Colors["second"] }}>
+                onChange={(event: any) => {
+                    setNewComment(event.target.value);
+                }} />
+            <Button variant="contained" sx={{ backgroundColor: Colors["second"] }}
+                onClick={() => {
+                    props.addComment(newComment)
+                    setNewComment("");
+                }}>
                 Submit
             </Button>
         </Box>}

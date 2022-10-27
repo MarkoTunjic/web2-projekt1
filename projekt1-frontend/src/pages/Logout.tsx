@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { PrincipalContext } from "../store/Principalcontext";
 
 function Logout() {
     const {
@@ -13,7 +14,6 @@ function Logout() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log(isAuthenticated)
         if (isAuthenticated) {
             logout();
         } else {
