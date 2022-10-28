@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 import Header from '../Header/Header';
 import Competitors from '../../pages/Competitors';
 import Games from '../../pages/Games';
@@ -25,6 +25,7 @@ function App() {
       setPrincipal(await authenticationClient.getCurrentPrincipal());
       setLoading(false);
     } else {
+      setLoading(false);
       setPrincipal(undefined);
     }
   }
@@ -37,7 +38,7 @@ function App() {
 
 
     <div className="App" style={{ width: '100vw', minHeight: '100vh', backgroundColor: Colors["third"], textAlign: 'center', overflow: "visible" }}>
-      <BrowserRouter>
+      <HashRouter>
         <Header />
         {isLoading || loading ? <h1>Loading...</h1> : <Routes>
           <Route path="/" element={<Home />} />
@@ -47,7 +48,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>}
-      </BrowserRouter>
+      </HashRouter>
     </div >
   );
 }
