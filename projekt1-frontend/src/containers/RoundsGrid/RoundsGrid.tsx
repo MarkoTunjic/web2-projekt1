@@ -13,7 +13,11 @@ function RoundsGrid() {
     }
 
     async function addRound() {
-        await roundClient.addRound({ body: data?.at(data.length - 1)?.ordinalNumber! + 1 })
+        let nextOrdinal = 1;
+        if (data !== undefined && data.length !== 0) {
+            nextOrdinal = data?.at(data.length - 1)?.ordinalNumber! + 1
+        }
+        await roundClient.addRound({ body: nextOrdinal })
         getRounds();
     }
 
