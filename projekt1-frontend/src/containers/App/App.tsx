@@ -37,7 +37,7 @@ function App() {
   return (
 
 
-    <div className="App" style={{ width: '100vw', minHeight: '100vh', backgroundColor: Colors["third"], textAlign: 'center', overflow: "visible" }}>
+    <div className="App" style={{ minWidth: '100vw', minHeight: '100vh', backgroundColor: Colors["third"], textAlign: 'center', overflow: "visible" }}>
       <HashRouter>
         <Header />
         {isLoading || loading ? <h1>Loading...</h1> : <Routes>
