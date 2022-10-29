@@ -62,4 +62,17 @@ public class RoundCommentServiceImpl implements RoundCommentService {
                 throw new IllegalArgumentException("This user can not delete comment with id: " + commentId);
         roundCommentRepository.deleteById(commentId);
     }
+
+    @Override
+    public void updateComment(Long commentId, String commentText) {
+        Principal principal = principalService.getCurrentPrincipal();
+        Optional<RoundComment> optionalComment = roundCommentRepository.findById(commentId);
+        if (optionalComment.isEmpty())
+            throw new IllegalArgumentException("Invalid comment id");
+        RoundComment comment = optionalComment.get();
+        if (!principal.equals(comment.getPrincipal()))
+            throw new IllegalArgumentException("This user can not update comment with id: " + commentId);
+        comment.setCommentText(commentText);
+        roundCommentRepository.save(comment);
+    }
 }

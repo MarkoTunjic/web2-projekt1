@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,14 @@ public class RoundCommentController {
     @PreAuthorize("!hasRole('')")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
         roundCommentService.deleteComment(commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{commentId}")
+    @SecurityRequirement(name = "BearerAuthentication")
+    @PreAuthorize("!hasRole('')")
+    public ResponseEntity<Void> updateComment(@PathVariable Long commentId, @RequestBody String commentText) {
+        roundCommentService.updateComment(commentId, commentText);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
