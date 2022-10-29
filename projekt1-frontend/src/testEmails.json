@@ -1,0 +1,14 @@
+{
+    "admin": {
+        "email": "tunjicm.web2.ad@gmail.com",
+        "password": "BlessJesus123!"
+    },
+    "user1": {
+        "email": "tunjicm.web2.user1@gmail.com",
+        "password": "BlesssJesus123!"
+    },
+    "user2": {
+        "email": "tunjicm.web2.user2@gmail.com",
+        "password": "BlesssJesus123!"
+    }
+}
