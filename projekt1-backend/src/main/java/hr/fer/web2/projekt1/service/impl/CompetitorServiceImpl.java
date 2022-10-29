@@ -24,7 +24,7 @@ public class CompetitorServiceImpl implements CompetitorService {
     public List<CompetitorDTO> getAllCompetitors() {
         return competitorRepository.findAll().stream()
                 .map(competitor -> competitorCompetitorDTOMapper.competitorToCompetitorDTO(competitor))
-                .sorted((c1, c2) -> c1.getPointsSum().compareTo(c2.getPointsSum()))
+                .sorted((c1, c2) -> c2.getPointsSum().compareTo(c1.getPointsSum()))
                 .toList();
     }
 

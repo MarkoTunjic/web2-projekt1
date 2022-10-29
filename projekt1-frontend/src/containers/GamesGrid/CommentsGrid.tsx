@@ -8,7 +8,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 interface CommentsGridProps {
     comments: CommentDTO[] | undefined,
     addComment: (newComment: string) => void,
-    deleteComment: (commentId: number) => void
+    deleteComment: (commentId: number) => void,
+    editComment: (commentId: number, commentText: string) => void
 }
 
 function CommentsGrid(props: CommentsGridProps) {
@@ -16,7 +17,7 @@ function CommentsGrid(props: CommentsGridProps) {
     const { isAuthenticated } = useAuth0();
 
     const getCommentCards = useCallback(() => {
-        return props.comments?.map(comment => <Comment key={comment.id} comment={comment} deleteComment={props.deleteComment} />);
+        return props.comments?.map(comment => <Comment key={comment.id} editComment={props.editComment} comment={comment} deleteComment={props.deleteComment} />);
     }, [props.comments, isAuthenticated]);
 
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}>

@@ -48,8 +48,12 @@ function GamesGrid() {
     }
 
     async function addComment(newComment: string) {
-        console.log(newComment);
         await roundCommentClient.newComment({ roundId: Number.parseInt(roundId!), body: newComment });
+        getComments();
+    }
+
+    async function editComment(commentId: number, commentText: string) {
+        await roundCommentClient.updateComment({ commentId: commentId, body: commentText });
         getComments();
     }
 
@@ -66,7 +70,7 @@ function GamesGrid() {
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <h1>Comments</h1>
-            <CommentsGrid comments={comments} addComment={addComment} deleteComment={deleteComment} />
+            <CommentsGrid editComment={editComment} comments={comments} addComment={addComment} deleteComment={deleteComment} />
         </Box>
     </Box>
 }

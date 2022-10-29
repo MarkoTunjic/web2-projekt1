@@ -47,6 +47,8 @@ public class RoundCommentServiceImpl implements RoundCommentService {
         Optional<Round> round = roundRepository.findById(roundId);
         if (round.isEmpty())
             throw new IllegalArgumentException("Unexisting round");
+        if (commentText.isBlank())
+            throw new IllegalArgumentException("Can not add blank comment");
         RoundComment newComment = new RoundComment(commentText, new Date(), principal, round.get());
         return roundCommentCommentDTOMapper.roundCommentToCommentDTO(roundCommentRepository.save(newComment));
     }

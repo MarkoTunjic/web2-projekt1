@@ -10,4 +10,6 @@ public interface RoundCommentService {
     CommentDTO newComment(Long roundId, String commentText);
 
     void deleteComment(Long commentId);
+
+    void updateComment(Long commentId, String commentText);
 }
