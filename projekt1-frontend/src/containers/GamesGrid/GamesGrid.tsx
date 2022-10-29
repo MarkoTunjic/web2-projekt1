@@ -60,7 +60,7 @@ function GamesGrid() {
 
     return <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-            <h1 key="header">Games for round {roundId}</h1>
+            <h1 key="header">Games for round {games !== undefined ? games[0]?.roundOrdinalNumber : undefined}</h1>
             <GamesTable key="table" games={games} currentEditingRow={currentEditingRow} setCurrentEditingRow={setCurrentEditingRow} editGame={editGame} />
             {(isAuthenticated && principal?.principalType === PrincipalDTOPrincipalTypeEnum.Admin) && <NewGameEntry key="new" createNewGame={postNewGame} />}
         </Box>

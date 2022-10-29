@@ -56,7 +56,6 @@ function NewGameEntry(props: NewGameEntryProps) {
                     sx={{ marginRight: "5px" }} />
                 <Button variant="contained" onClick={() => {
                     props.createNewGame({ ...newGameEntry, date: new Date(newGameEntry.date?.toString()!) });
-                    setNewGameEntry((old) => { return {} });
                 }}>Submit</Button>
             </Box>
         </CardContent>
