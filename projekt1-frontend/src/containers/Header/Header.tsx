@@ -9,7 +9,7 @@ function Header() {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const navigate = useNavigate();
     const location = useLocation();
-    const { isAuthenticated, isLoading } = useAuth0();
+    const { isAuthenticated, isLoading, user } = useAuth0();
 
     useEffect(() => {
         if (location.pathname.toLowerCase().includes("competitors")) {
@@ -30,7 +30,7 @@ function Header() {
             return <Typography>Loading...</Typography>
         return isAuthenticated ?
             <Link onClick={() => navigate("/logout")} sx={{ ...LinkStyle, color: activeIndex === 3 ? Colors["third"] : "black" }}>
-                Logout
+                Logout {user?.email}
             </Link> :
             <Link onClick={() => navigate("/login")} sx={{ ...LinkStyle, color: activeIndex === 3 ? Colors["third"] : "black" }}>
                 Login
